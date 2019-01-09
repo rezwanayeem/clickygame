@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Nav from "./components/Nav";
 import Header from "./components/Header";
+import Container from "./components/Container";
 import CharacterCard from "./components/CharacterCard";
 import characters from "./characters.json";
-import Container from "./components/Container";
 import "./App.css";
 
 
@@ -21,7 +21,7 @@ class App extends Component {
     characters,
     score: 0,
     topScore: 0,
-    guessed: [],
+    clicked: [],
   };
 
 
@@ -31,11 +31,11 @@ class App extends Component {
   imageClicked = id => {
    //indexOf method returns the first index of a specified value (value = id)
    // because -1= 0; though -1 means "no match found"
-    if (this.state.guessed.indexOf(id) === -1) {
+    if (this.state.clicked.indexOf(id) === -1) {
       this.handleScore();
       this.setState({
         //merging id arrays
-        guessed: this.state.guessed.concat(id)
+        clicked: this.state.clicked.concat(id)
       });
     } else {
       this.resetGame();
@@ -43,13 +43,15 @@ class App extends Component {
   };
 
   // keep tracking score until 5 available cards are clicked.
-  // till press the same card, it will add as a new score to the top score 
+  // Top score remaining the score till player clicked the same card
+  // while top score go beyond 5, a value added with it ( for => score + 1)
   handleScore = () => {
     const newScore = this.state.score + 1;
     this.setState({ score: newScore });
     if (newScore >= this.state.topScore) {
       this.setState({ topScore: newScore});
-    } else if (newScore === 5)
+      //while player clicked the same card will shuffle the card of characters
+    } else if (newScore === 8)
       this.handleShuffle();
   };
 
@@ -63,13 +65,15 @@ class App extends Component {
   // reset the game 
   resetGame = () => {
      this.setState({
+      // if player clicked the same cards will reset the score
       score: 0,
+      //if player clicked the same cards on which top score be continue adding each click till 7
       topScore: this.state.topScore,
-      guessed: []
+      clicked: []
     });
     this.handleShuffle();
   };
-
+// render method transforming react components to display on the screen
   render() {
     return (
       <div>
