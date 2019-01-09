@@ -77,7 +77,7 @@ class App extends Component {
       <div>
         <Nav
           name="Clicky Game" score={this.state.score} topScore={this.state.topScore} />
-        <Header h1="To earn score, click on an image but don't click on any more than once!" />
+        <Header h1="To get the score, click on an image but don't click on any more than once!" />
         <Container>
           {this.state.characters.map(character => (
             <CharacterCard
