@@ -20,7 +20,7 @@ class App extends Component {
   state = {
     characters,
     score: 0,
-    topScore: 0,
+    topScore: 8,
     clicked: [],
   };
 
@@ -42,16 +42,15 @@ class App extends Component {
     }
   };
 
-  // keep tracking score until 5 available cards are clicked.
-  // Top score remaining the score till player clicked the same card
-  // while top score go beyond 5, a value added with it ( for => score + 1)
+  // keep tracking score until available cards are clicked.
+  // while crossing the given top score will add value with each click to top score ( for => score + 1)
   handleScore = () => {
     const newScore = this.state.score + 1;
     this.setState({ score: newScore });
     if (newScore >= this.state.topScore) {
       this.setState({ topScore: newScore});
-      //while player clicked the same card will shuffle the card of characters
-    } else if (newScore === 8)
+      // clicking on the same card will shuffle the cards
+    } else if (newScore === 0)
       this.handleShuffle();
   };
 
@@ -67,7 +66,7 @@ class App extends Component {
      this.setState({
       // if player clicked the same cards will reset the score
       score: 0,
-      //if player clicked the same cards on which top score be continue adding each click till 7
+      //if player sucessfully go beyond the top score will continue adding each click 
       topScore: this.state.topScore,
       clicked: []
     });
