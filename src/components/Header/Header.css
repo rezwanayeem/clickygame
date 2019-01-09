@@ -1,0 +1,12 @@
+.header {
+    color:black;
+    padding: 100px 5px;
+    padding-bottom: 0px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 30px;
+}
