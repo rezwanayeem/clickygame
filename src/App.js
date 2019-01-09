@@ -21,7 +21,7 @@ class App extends Component {
     characters,
     score: 0,
     topScore: 0,
-    clicked: [],
+    guessed: [],
   };
 
 
@@ -29,10 +29,13 @@ class App extends Component {
   // score is added by each click
   // when click on same card start the game again
   imageClicked = id => {
-    if (this.state.clicked.indexOf(id) === -1) {
+   //indexOf method returns the first index of a specified value (value = id)
+   // because -1= 0; though -1 means "no match found"
+    if (this.state.guessed.indexOf(id) === -1) {
       this.handleScore();
       this.setState({
-        clicked: this.state.clicked.concat(id)
+        //merging id arrays
+        guessed: this.state.guessed.concat(id)
       });
     } else {
       this.resetGame();
@@ -40,16 +43,12 @@ class App extends Component {
   };
 
   // keep tracking score until 5 available cards are clicked.
-  // till press the same card, it will add new score to the top score 
+  // till press the same card, it will add as a new score to the top score 
   handleScore = () => {
     const newScore = this.state.score + 1;
-    this.setState({
-      score: newScore,
-    });
+    this.setState({ score: newScore });
     if (newScore >= this.state.topScore) {
-      this.setState({
-        topScore: newScore
-      });
+      this.setState({ topScore: newScore});
     } else if (newScore === 5)
       this.handleShuffle();
   };
@@ -57,17 +56,16 @@ class App extends Component {
   //once done it shuffles the cards for further play
   handleShuffle = () => {
     const shuffledCards = shuffleCards(characters);
-    this.setState({
-      characters: shuffledCards
-    });
+    this.setState({ characters: shuffledCards
+ });
   };
 
   // reset the game 
   resetGame = () => {
-    this.setState({
+     this.setState({
       score: 0,
       topScore: this.state.topScore,
-      clicked: []
+      guessed: []
     });
     this.handleShuffle();
   };
@@ -75,9 +73,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Nav
-          name="Clicky Game" score={this.state.score} topScore={this.state.topScore} />
-        <Header h1="To get the score, click on an image but don't click on any more than once!" />
+        <Nav score={this.state.score} topScore={this.state.topScore} />
+        <Header/>
         <Container>
           {this.state.characters.map(character => (
             <CharacterCard
