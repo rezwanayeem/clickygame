@@ -19,43 +19,48 @@ function shuffleCards(array) {
 class App extends Component {
   state = {
     characters,
-    score: 0,
+    currentScore: 0,
     topScore: 8,
     clicked: [],
   };
 
-
   // Click event handler
   // score is added by each click
-  // when click on same card start the game again
+  // when click on same character start the game again
+  // each character card holds each id 
   imageClicked = id => {
    //indexOf method returns the first index of a specified value (value = id)
    // because -1= 0; though -1 means "no match found"
     if (this.state.clicked.indexOf(id) === -1) {
+      // until player clicked the same card of character, score remains stored
       this.handleScore();
+      // keep comnnection with its component to track the clicked score each id hold
       this.setState({
         //merging id arrays
         clicked: this.state.clicked.concat(id)
       });
     } else {
+      //reset the game
       this.resetGame();
     }
+   
   };
 
   // keep tracking score until available cards are clicked.
-  // while crossing the given top score will add value with each click to top score ( for => score + 1)
+  // while crossing the given top score will add value with each click to topscore ( for => score + 1)
   handleScore = () => {
-    const newScore = this.state.score + 1;
-    this.setState({ score: newScore });
-    if (newScore >= this.state.topScore) {
+    const newScore = this.state.currentScore + 1;
+    this.setState({ currentScore: newScore });
+    // if newscore > topscore happens topscore starts gaining value with newscore 
+    if (newScore > this.state.topScore) {
       this.setState({ topScore: newScore});
-      // clicking on the same card will shuffle the cards
-    } else if (newScore === 0)
-      this.handleShuffle();
+      // clicking on the same card will shuffle the characters
+    } else if (newScore < 0)
+      this.shuffle();
   };
 
-  //once done it shuffles the cards for further play
-  handleShuffle = () => {
+  //once done it shuffles the characters for further play
+  shuffle = () => {
     const shuffledCards = shuffleCards(characters);
     this.setState({ characters: shuffledCards
  });
@@ -65,18 +70,19 @@ class App extends Component {
   resetGame = () => {
      this.setState({
       // if player clicked the same cards will reset the score
-      score: 0,
+      currentScore: 0,
       //if player sucessfully go beyond the top score will continue adding each click 
       topScore: this.state.topScore,
       clicked: []
     });
-    this.handleShuffle();
+    this.shuffle();
   };
 // render method transforming react components to display on the screen
+// here map is used to convert an array to another array with shuffling characters 
   render() {
     return (
       <div>
-        <Nav score={this.state.score} topScore={this.state.topScore} />
+        <Nav score={this.state.currentScore} topScore={this.state.topScore} />
         <Header/>
         <Container>
           {this.state.characters.map(character => (
@@ -86,7 +92,7 @@ class App extends Component {
               imageClicked={this.imageClicked}
               handleScore={this.handleScore}
               resetGame={this.resetGame}
-              handleShuffle={this.handleShuffle}
+              shuffle={this.shuffle}
             />
           ))}
         </Container>
