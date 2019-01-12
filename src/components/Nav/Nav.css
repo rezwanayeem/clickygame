@@ -1,4 +1,4 @@
-.navbar {
+.nav {
     background: blueviolet;
     min-height: 70px;
     position: fixed;
@@ -7,20 +7,17 @@
     font-size: 30px;
 }
 
-.navbar ul {
-    margin: 0;
-    padding: 0;
-    align-items: center;
-}
-
-.navbar li {
+#score {
+    position: absolute;
+    right: 0;
+    text-align: center;
     display: inline-block;
     padding: 20px 0;
     width: 35%;
-    text-align: center;
 }
-
-.navbar a {
-    color: #fff;
-
+#title {
+    position: absolute;
+    text-align: center;
+    display: inline-block;
+    padding: 20px 0;
 }

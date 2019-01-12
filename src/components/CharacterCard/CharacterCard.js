@@ -1,12 +1,12 @@
 import React from "react";
 import "./CharacterCard.css";
 
-const CharacterCard = props => (
-  <div className="card" value ={props.id} onClick={() => props.imageClicked(props.id)}>
-    <div className="img-container">
-      <img alt={props.name} src={props.image} />
-    </div>
+function CharacterCard(props) {
+  return(
+  <div onClick={()=> props.handleClick(props.id)} className="card">
+    <div>{props.name}</div>
+      <img className="image" alt={props.name} src={props.image}></img>
   </div>
-);
-
+  )
+}
 export default CharacterCard;

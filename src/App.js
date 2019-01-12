@@ -3,96 +3,117 @@ import Nav from "./components/Nav";
 import Header from "./components/Header";
 import Container from "./components/Container";
 import CharacterCard from "./components/CharacterCard";
-import characters from "./characters.json";
 import "./App.css";
-
-
-function shuffleCards(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+const charactersArray =  [
+  {
+    id: 1,
+    name: "King of fighter",
+    image: "https://tse1.mm.bing.net/th?id=OIP.kUdUna4FqxbYis3DHl7DPQHaNK&pid=15.1&P=0&w=300&h=300"
+  },
+  {
+    id: 2,
+    name: "Von",
+    image: "https://static.giantbomb.com/uploads/original/15/151939/2295197-von_kaiser.jpg"
+  },
+  {
+    id: 3,
+    name: "Craig",
+    image: "https://www.fightersgeneration.com/characters/marduk-hqt5.jpg"
+  },
+  {
+    id: 4,
+    name: "SoulCalibur",
+    image: "https://tse3.mm.bing.net/th?id=OIP.UjsbPPD-dJ0_gYKrgDMASwHaIr&pid=15.1&P=0&w=300&h=300"
+  },
+  {
+    id: 5,
+    name: "Galford",
+    image: "http://www.fightersgeneration.com/characters/galfordz2.jpg"
+  },
+  {
+    id: 6,
+    name: "Elsword",
+    image: "https://tse3.mm.bing.net/th?id=OIP.1APvhB-eMJVorbby1OeRlAHaIp&pid=15.1&P=0&w=300&h=300"
+  },
+  {
+    id: 7,
+    name: "Character",
+    image: "https://i.pinimg.com/736x/87/da/89/87da89647c3d9c7bbaeaf809ec0f8979--character-reference-character-concept.jpg"
+  },
+  {
+    id: 8,
+    name: "Justin",
+    image: "https://i1.wp.com/operationrainfall.com/wp-content/uploads/2016/12/PUNISHER_002.jpg"
+  },
+  {
+    id: 9,
+    name: "Artwork character",
+    image: "https://www.fightersgeneration.com/characters/axl-acc.jpg"
+  },
+  {
+    id: 10,
+    name: "Nobuyuki",
+    image: "https://tse4.mm.bing.net/th?id=OIP.n90bxEqQGKgFWDHYiSjBpQHaI5&pid=15.1&P=0&w=300&h=300"
+  },
+  {
+    id: 11,
+    name: "Feng Wei",
+    image: "https://tse2.mm.bing.net/th?id=OIP.0leEi-agPxWO7JE6gKSFfwHaJ4&pid=15.1&P=0&w=300&h=300"
+  },
+  {
+    id: 12,
+    name: "Erik",
+    image: "http://1.bp.blogspot.com/-2zzOqxiWjgs/VjPUZpbUhRI/AAAAAAAAJj4/4fKUiHpYQZI/s1600/9%2BKagetora%2B.png"
   }
-  return array;
-};
-
+]
 
 class App extends Component {
   state = {
-    characters,
-    currentScore: 0,
-    topScore: 8,
-    clicked: [],
-  };
+    characters: charactersArray,
+    score: 0,
+    clicked: []
+  }
 
-  // Click event handler
-  // score is added by each click
-  // when click on same character start the game again
-  // each character card holds each id 
-  imageClicked = id => {
-   //indexOf method returns the first index of a specified value (value = id)
-   // because -1= 0; though -1 means "no match found"
-    if (this.state.clicked.indexOf(id) === -1) {
-      // until player clicked the same card of character, score remains stored
-      this.handleScore();
-      // keep comnnection with its component to track the clicked score each id hold
+  handleClick = (id)=> {
+     this.shuffle(charactersArray);
+
+    if(!this.state.clicked.includes(id)){
       this.setState({
-        //merging id arrays
-        clicked: this.state.clicked.concat(id)
-      });
-    } else {
-      //reset the game
-      this.resetGame();
+        clicked: [...this.state.clicked, id],
+        score: this.state.score + 1
+      })
+    }else {
+        this.setState({score:0, clicked: []});
+      alert('You lose!')
     }
-   
-  };
+  }
+  shuffle = (array) => {
+        var x;
+        var shuffleCards = array.length;
+        var randomIndex;
 
-  // keep tracking score until available cards are clicked.
-  // while crossing the given top score will add value with each click to topscore ( for => score + 1)
-  handleScore = () => {
-    const newScore = this.state.currentScore + 1;
-    this.setState({ currentScore: newScore });
-    // if newscore > topscore happens topscore starts gaining value with newscore 
-    if (newScore > this.state.topScore) {
-      this.setState({ topScore: newScore});
-      // clicking on the same card will shuffle the characters
-    } else if (newScore < 0)
-      this.shuffle();
-  };
+        while (shuffleCards) {
+          randomIndex = Math.floor(Math.random() * shuffleCards--);
+      
+          // shuffle cards 
+          x = array[shuffleCards];
+          array[shuffleCards] = array[randomIndex];
+          array[randomIndex] = x;
+        }      
+  }
 
-  //once done it shuffles the characters for further play
-  shuffle = () => {
-    const shuffledCards = shuffleCards(characters);
-    this.setState({ characters: shuffledCards
- });
-  };
-
-  // reset the game 
-  resetGame = () => {
-     this.setState({
-      // if player clicked the same cards will reset the score
-      currentScore: 0,
-      //if player sucessfully go beyond the top score will continue adding each click 
-      topScore: this.state.topScore,
-      clicked: []
-    });
-    this.shuffle();
-  };
-// render method transforming react components to display on the screen
-// here map is used to convert an array to another array with shuffling characters 
   render() {
     return (
       <div>
-        <Nav score={this.state.currentScore} topScore={this.state.topScore} />
+        <Nav title="Clicky Game" score={this.state.score}/>
         <Header/>
         <Container>
           {this.state.characters.map(character => (
             <CharacterCard
-              id={character.id}
-              image={character.image}
-              imageClicked={this.imageClicked}
-              handleScore={this.handleScore}
-              resetGame={this.resetGame}
-              shuffle={this.shuffle}
+            id={character.id}
+            handleClick={this.handleClick} 
+            image={character.image} 
+            name={character.name}
             />
           ))}
         </Container>
@@ -100,4 +121,6 @@ class App extends Component {
     );
   }
 }
+
 export default App;
+
