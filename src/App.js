@@ -80,11 +80,10 @@ class App extends Component {
     if(!this.state.clicked.includes(id)){
       this.setState({
         clicked: [...this.state.clicked, id],
-        score: this.state.score + 1
+        score: this.state.score + 1   
       })
     }else {
         this.setState({score:0, clicked: []});
-      alert('You lose!')
     }
   }
   shuffle = (array) => {
